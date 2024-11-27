@@ -2,6 +2,8 @@ package com.idat.edu.pe.EvaluacionFinal.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
+
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -30,6 +32,10 @@ public class Usuario {
     @Column(name = "fondos")
     private BigDecimal fondos;
 
+    @Column(nullable = false, unique = true) // En la base de datos, debe ser único
+    @Size(min = 8, max = 9, message = "El DNI debe tener entre 8 y 9 caracteres.")
+    private String dni;
+
     @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinTable(
             name = "usuario_rol",
@@ -41,7 +47,6 @@ public class Usuario {
     @OneToMany(mappedBy = "idUsuario", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Apuesta> idApuestas;
-
 
     public Long getId() {
         return id;
@@ -91,6 +96,14 @@ public class Usuario {
         this.fondos = fondos;
     }
 
+    public String getDni() {
+        return dni;
+    }
+
+    public void setDni(String dni) {
+        this.dni = dni;
+    }
+
     public Collection<Rol> getRoles() {
         return roles;
     }
@@ -107,33 +120,37 @@ public class Usuario {
         this.idApuestas = idApuestas;
     }
 
-    public Usuario(Long id, String nombre, String email, String password, LocalDate fechaNacimiento, BigDecimal fondos, Collection<Rol> roles, List<Apuesta> idApuestas) {
+
+    public Usuario(Long id, String nombre, String email, String password, LocalDate fechaNacimiento, BigDecimal fondos, String dni, Collection<Rol> roles, List<Apuesta> idApuestas) {
         this.id = id;
         this.nombre = nombre;
         this.email = email;
         this.password = password;
         this.fechaNacimiento = fechaNacimiento;
         this.fondos = fondos;
+        this.dni = dni;
         this.roles = roles;
         this.idApuestas = idApuestas;
     }
 
-    public Usuario(String nombre, String email, String password, LocalDate fechaNacimiento, BigDecimal fondos, Collection<Rol> roles, List<Apuesta> idApuestas) {
+    public Usuario(String nombre, String email, String password, LocalDate fechaNacimiento, BigDecimal fondos, String dni, Collection<Rol> roles, List<Apuesta> idApuestas) {
         this.nombre = nombre;
         this.email = email;
         this.password = password;
         this.fechaNacimiento = fechaNacimiento;
         this.fondos = fondos;
+        this.dni = dni;
         this.roles = roles;
         this.idApuestas = idApuestas;
     }
 
-    public Usuario(String nombre, String email, String password, LocalDate fechaNacimiento, BigDecimal fondos) {
+    public Usuario(String nombre, String email, String password, LocalDate fechaNacimiento, BigDecimal fondos, String dni) {
         this.nombre = nombre;
         this.email = email;
         this.password = password;
         this.fechaNacimiento = fechaNacimiento;
         this.fondos = fondos;
+        this.dni = dni;
     }
 
     public Usuario() {

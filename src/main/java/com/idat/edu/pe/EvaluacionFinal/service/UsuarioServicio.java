@@ -34,7 +34,8 @@ public class UsuarioServicio{
                 usuario.getEmail(),
                 usuario.getPassword(),
                 usuario.getFechaNacimiento(),
-                usuario.getFondos()
+                usuario.getFondos(),
+                usuario.getDni()
         );
         return usuarioRepository.save(user);
     }
@@ -95,6 +96,10 @@ public class UsuarioServicio{
         nuevoaux.setFondos(nuevosFondos);
 
         return this.actualizarUsuario(id, nuevoaux);
+    }
+
+    public Usuario retirarFondos(Long id, Usuario usuario){
+        return usuario;
     }
 
 }
