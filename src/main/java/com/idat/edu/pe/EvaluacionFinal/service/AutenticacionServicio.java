@@ -29,4 +29,11 @@ public class AutenticacionServicio {
         }
         return false;
     }
+
+    public boolean authenticateDNI(String dni){
+        Optional<Usuario> usuarioOptional = usuarioServicio.optenerPorDNI(dni);
+
+        if (usuarioOptional.isPresent()){return true;}
+        else return false;
+    }
 }

@@ -44,9 +44,9 @@ public class UsuarioServicio{
         return usuarioRepository.findById(id);
     }
 
-    public Optional<Usuario> obtenerPorEmail(String email){
-        return usuarioRepository.findByEmail(email);
-    }
+    public Optional<Usuario> obtenerPorEmail(String email){return usuarioRepository.findByEmail(email);}
+
+    public Optional<Usuario> optenerPorDNI(String dni) {return usuarioRepository.findByDni(dni);}
 
     public boolean eliminarUsuario(Long id){
         try{
