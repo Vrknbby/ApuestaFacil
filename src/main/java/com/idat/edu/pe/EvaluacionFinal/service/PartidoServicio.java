@@ -120,11 +120,9 @@ public class PartidoServicio {
             }
             return partidoRepository.save(partidoActualizado);
         }else {
-
             System.out.println("entre en el null");
             return null;
         }
-
     }
 
     @Transactional
@@ -145,7 +143,6 @@ public class PartidoServicio {
         }else{
             partidoDTO.setIdEquipoGanador(EMPATE_ID);
         }
-
         //señal para cambiar las apuestas
         ArrayList<Apuesta> apuestas = apuestaServicio.obtenerApuestaPorPartido(partido);
         for(Apuesta apuesta : apuestas){
@@ -167,7 +164,6 @@ public class PartidoServicio {
         }
         return this.actualizarPartido(id, partidoDTO);
     }
-
 
     public Partido cambiarAEnVivo(PartidoDTO partidoDTO){
         Partido partido = new Partido();
