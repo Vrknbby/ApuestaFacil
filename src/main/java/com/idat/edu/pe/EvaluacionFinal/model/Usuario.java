@@ -26,7 +26,7 @@ public class Usuario {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "fecha_nacimiento")
+    @Column(name = "fechanac")
     private LocalDate fechaNacimiento;
 
     @Column(name = "fondos")
