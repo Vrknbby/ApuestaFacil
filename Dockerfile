@@ -1,4 +1,4 @@
-FROM maven:3.8.1-openjdk-21 as compile
+FROM maven:3.8-openjdk-21 as compile
 
 COPY . /usr/src/app
 WORKDIR /usr/src/app
