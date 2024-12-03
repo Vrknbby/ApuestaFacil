@@ -83,7 +83,7 @@ public class ApuestaServicio {
             Apuesta apuesta = new Apuesta();
             Usuario usuario = new Usuario();
             Optional<Apuesta> apuestaOptional = apuestaRepository.findById(idApuesta);
-            Optional<Usuario> usuarioOptional = usuarioRepository.findById(idusuario);
+            Optional<Usuario> usuarioOptional = usuarioServicio.obtenerPorId(idusuario);
             if (apuestaOptional.isPresent()) {apuesta = apuestaOptional.get();}
             if (usuarioOptional.isPresent()) {usuario = usuarioOptional.get();}
 
