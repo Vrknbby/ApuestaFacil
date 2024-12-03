@@ -5,10 +5,9 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: apuestasdb
-      MYSQL_USER: root
-      MYSQL_PASSWORD: 123456
     ports:
       - "3306:3306"
+
   apuestasdb:
     build: .
     ports:
@@ -20,4 +19,3 @@ services:
       DB_PORT: 3306
       DB_USERNAME: root
       DB_PASSWORD: 123456
-
