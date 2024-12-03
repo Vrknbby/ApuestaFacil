@@ -9,7 +9,7 @@ services:
       - "3306:3306"
 
   apuestasdb:
-    build: .
+    image: ghcr.io/vrknbby/apuestafacil:1.0.0
     ports:
       - "8090:8090"
     depends_on:
