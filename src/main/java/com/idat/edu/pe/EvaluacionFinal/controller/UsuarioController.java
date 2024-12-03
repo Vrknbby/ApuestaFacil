@@ -1,5 +1,6 @@
 package com.idat.edu.pe.EvaluacionFinal.controller;
 
+import com.idat.edu.pe.EvaluacionFinal.model.Descuento;
 import com.idat.edu.pe.EvaluacionFinal.model.Usuario;
 import com.idat.edu.pe.EvaluacionFinal.service.UsuarioServicio;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,4 +64,10 @@ public class UsuarioController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @PutMapping("/codigo/{id}")
+    public boolean ingresarCodigoDescuento(@PathVariable Long id, @RequestBody Descuento descuentoCod){
+        return usuarioServicio.agregarDescuento(id, descuentoCod);
+    }
+
 }

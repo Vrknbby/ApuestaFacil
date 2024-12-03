@@ -1,7 +1,9 @@
 package com.idat.edu.pe.EvaluacionFinal.service;
 
+import com.idat.edu.pe.EvaluacionFinal.model.Descuento;
 import com.idat.edu.pe.EvaluacionFinal.model.Usuario;
 import com.idat.edu.pe.EvaluacionFinal.repository.UsuarioRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,6 +25,8 @@ public class UsuarioServicio{
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private DescuentoServicio descuentoServicio;
     public ArrayList<Usuario> obtenerUsuarios(){
         return (ArrayList<Usuario>) usuarioRepository.findAll();
 
@@ -102,6 +106,29 @@ public class UsuarioServicio{
         return usuario;
     }
 
+    @Transactional
+    public Boolean agregarDescuento(Long idUsuario, Descuento descuentoCod){
+        Usuario usuario = new Usuario();
+        Descuento descuento = new Descuento();
+
+        Optional<Descuento> descuentoOPT= descuentoServicio.obtenerPorCodigo(descuentoCod.getCodigoDescuento());
+        Optional<Usuario> usuarioOPT=usuarioRepository.findById(idUsuario);
+        if(descuentoOPT.isPresent()){ descuento = descuentoOPT.get();}
+        else {
+            System.out.println("EL CODIGO NO EXISTE");
+            return false;
+        }
+        if(usuarioOPT.isPresent()){ usuario = usuarioOPT.get();}
+
+        if(descuentoServicio.obtenerUsosDescuento(descuento.getId()).size() <= descuento.getCantUsos()){
+            usuario.setFondos(descuento.getRecarga());
+            ingresarFondos(usuario.getId(), usuario);
+            return true;
+        }else{
+            System.out.println("El descuento ya alcanzo el limite de usos");
+        }
+        return false;
+    }
 }
 
 

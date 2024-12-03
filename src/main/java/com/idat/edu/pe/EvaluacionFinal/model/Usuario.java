@@ -38,6 +38,14 @@ public class Usuario {
 
     @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinTable(
+            name = "usuario_descuento",
+            joinColumns = @JoinColumn(name = "usuario_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "descuento_id", referencedColumnName = "id")
+    )
+    private Collection<Descuento> descuentos;
+
+    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @JoinTable(
             name = "usuario_rol",
             joinColumns = @JoinColumn(name = "usuario_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "rol_id", referencedColumnName = "id")
@@ -96,12 +104,20 @@ public class Usuario {
         this.fondos = fondos;
     }
 
-    public String getDni() {
+    public @Size(min = 8, max = 9, message = "El DNI debe tener entre 8 y 9 caracteres.") String getDni() {
         return dni;
     }
 
-    public void setDni(String dni) {
+    public void setDni(@Size(min = 8, max = 9, message = "El DNI debe tener entre 8 y 9 caracteres.") String dni) {
         this.dni = dni;
+    }
+
+    public Collection<Descuento> getDescuentos() {
+        return descuentos;
+    }
+
+    public void setDescuentos(Collection<Descuento> descuentos) {
+        this.descuentos = descuentos;
     }
 
     public Collection<Rol> getRoles() {
@@ -120,8 +136,7 @@ public class Usuario {
         this.idApuestas = idApuestas;
     }
 
-
-    public Usuario(Long id, String nombre, String email, String password, LocalDate fechaNacimiento, BigDecimal fondos, String dni, Collection<Rol> roles, List<Apuesta> idApuestas) {
+    public Usuario(Long id, String nombre, String email, String password, LocalDate fechaNacimiento, BigDecimal fondos, String dni, Collection<Descuento> descuentos, Collection<Rol> roles, List<Apuesta> idApuestas) {
         this.id = id;
         this.nombre = nombre;
         this.email = email;
@@ -129,17 +144,19 @@ public class Usuario {
         this.fechaNacimiento = fechaNacimiento;
         this.fondos = fondos;
         this.dni = dni;
+        this.descuentos = descuentos;
         this.roles = roles;
         this.idApuestas = idApuestas;
     }
 
-    public Usuario(String nombre, String email, String password, LocalDate fechaNacimiento, BigDecimal fondos, String dni, Collection<Rol> roles, List<Apuesta> idApuestas) {
+    public Usuario(String nombre, String email, String password, LocalDate fechaNacimiento, BigDecimal fondos, String dni, Collection<Descuento> descuentos, Collection<Rol> roles, List<Apuesta> idApuestas) {
         this.nombre = nombre;
         this.email = email;
         this.password = password;
         this.fechaNacimiento = fechaNacimiento;
         this.fondos = fondos;
         this.dni = dni;
+        this.descuentos = descuentos;
         this.roles = roles;
         this.idApuestas = idApuestas;
     }
