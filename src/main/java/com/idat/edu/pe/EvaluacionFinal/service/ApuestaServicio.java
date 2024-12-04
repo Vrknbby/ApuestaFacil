@@ -87,33 +87,33 @@ public class ApuestaServicio {
             Optional<Apuesta> apuestaOptional = apuestaRepository.findById(idApuesta);
             Optional<Usuario> usuarioOptional = usuarioServicio.obtenerPorId(idusuario);
 
-            if (apuestaOptional.isPresent()) {apuesta = apuestaOptional.get();}
-            if (usuarioOptional.isPresent()) {usuario = usuarioOptional.get();}
+            if (apuestaOptional.isPresent()) { apuesta = apuestaOptional.get(); }
+            if (usuarioOptional.isPresent()) { usuario = usuarioOptional.get(); }
 
             Optional<Partido> partidoOptional = partidoServicio.obtenerPartidoPorId(apuesta.getIdPartido().getId());
-            if(partidoOptional.isPresent()) {partido = partidoOptional.get();}
+            if (partidoOptional.isPresent()) { partido = partidoOptional.get(); }
 
-            if (partido.getEstado().equals("En vivo")){
+
+            if (partido.getEstado().equals("En vivo")) {
                 BigDecimal montoApuesta = apuesta.getMontoApuesta();
-                BigDecimal newMontoUsuario = usuario.getFondos().add(montoApuesta.multiply(BigDecimal.valueOf(0.5).negate()));
-                usuario.setFondos(newMontoUsuario.multiply(BigDecimal.valueOf(-1)));
+                BigDecimal montoDevolucion = montoApuesta.multiply(BigDecimal.valueOf(0.5));
+                BigDecimal newMontoUsuario = usuario.getFondos().add(montoDevolucion);
+                usuario.setFondos(newMontoUsuario);
 
                 boolean authentic = autenticacionServicio.authenticateDNI(usuario.getDni());
-
-                if (apuesta.getIdUsuario().getId().equals(usuario.getId()) && authentic){
+                if (apuesta.getIdUsuario().getId().equals(usuario.getId()) && authentic) {
                     usuarioServicio.actualizarUsuario(usuario.getId(), usuario);
                     apuestaRepository.deleteById(idApuesta);
                     return true;
                 }
 
-            }else{
+            } else {
                 BigDecimal montoApuesta = apuesta.getMontoApuesta();
                 BigDecimal newMontoUsuario = usuario.getFondos().add(montoApuesta);
                 usuario.setFondos(newMontoUsuario);
 
                 boolean authentic = autenticacionServicio.authenticateDNI(usuario.getDni());
-
-                if (apuesta.getIdUsuario().getId().equals(usuario.getId()) && authentic){
+                if (apuesta.getIdUsuario().getId().equals(usuario.getId()) && authentic) {
                     usuarioServicio.actualizarUsuario(usuario.getId(), usuario);
                     apuestaRepository.deleteById(idApuesta);
                     return true;
@@ -121,7 +121,7 @@ public class ApuestaServicio {
             }
             return false;
 
-        }catch (Exception err){
+        } catch (Exception err) {
             return false;
         }
     }
