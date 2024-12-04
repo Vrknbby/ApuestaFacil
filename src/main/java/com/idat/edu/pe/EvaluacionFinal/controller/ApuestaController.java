@@ -2,17 +2,15 @@ package com.idat.edu.pe.EvaluacionFinal.controller;
 
 import com.idat.edu.pe.EvaluacionFinal.DTO.ApuestaDTO;
 import com.idat.edu.pe.EvaluacionFinal.model.Apuesta;
-import com.idat.edu.pe.EvaluacionFinal.model.Equipo;
 import com.idat.edu.pe.EvaluacionFinal.model.Partido;
 import com.idat.edu.pe.EvaluacionFinal.model.Usuario;
 import com.idat.edu.pe.EvaluacionFinal.service.ApuestaServicio;
-import com.idat.edu.pe.EvaluacionFinal.service.EquipoServicio;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Optional;
 
 @RestController
@@ -38,11 +36,12 @@ public class ApuestaController {
     }
 
 
-    @DeleteMapping(path = "/{id}")
-    public String eliminarApuestaPorId(@PathVariable("id")Long id){
-        boolean ok = this.apuestaServicio.eliminarApuesta(id);
-        if (ok) return "La apuesta se elimino correctamente";
-        else return "No se pudo eliminar la apuesta";
+    @DeleteMapping(path = "/{id}/{idUsuario}")
+    public ResponseEntity<String> eliminarApuestaPorId(@PathVariable("id")Long idApuesta, @PathVariable("idUsuario") Long idusuario){
+        boolean ok = this.apuestaServicio.eliminarApuesta(idApuesta,idusuario);
+        if (ok) return ResponseEntity.ok("La apuesta se elimino correctamente");
+        else return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("No se pudo eliminar la apuesta correctamente.");
+
     }
 
     @GetMapping("/queryPartido")

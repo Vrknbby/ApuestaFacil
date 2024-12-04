@@ -6,6 +6,7 @@ import com.idat.edu.pe.EvaluacionFinal.model.Apuesta;
 import com.idat.edu.pe.EvaluacionFinal.model.Partido;
 import com.idat.edu.pe.EvaluacionFinal.model.Usuario;
 import com.idat.edu.pe.EvaluacionFinal.repository.ApuestaRepository;
+import com.idat.edu.pe.EvaluacionFinal.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,13 @@ public class ApuestaServicio {
     ApuestaRepository apuestaRepository;
 
     @Autowired
+    UsuarioRepository usuarioRepository;
+
+    @Autowired
     PartidoServicio partidoServicio;
+
+    @Autowired
+    AutenticacionServicio autenticacionServicio;
 
     @Autowired
     UsuarioServicio usuarioServicio;
@@ -69,11 +76,51 @@ public class ApuestaServicio {
         return apuestaRepository.findById(id);
     }
 
-    public boolean eliminarApuesta(Long id){
+    @Transactional
+    public boolean eliminarApuesta(Long idApuesta, Long idusuario){
         try{
-            apuestaRepository.deleteById(id);
-            return true;
-        }catch (Exception err){
+            Apuesta apuesta = new Apuesta();
+            Usuario usuario = new Usuario();
+            Partido partido = new Partido();
+
+            Optional<Apuesta> apuestaOptional = apuestaRepository.findById(idApuesta);
+            Optional<Usuario> usuarioOptional = usuarioServicio.obtenerPorId(idusuario);
+
+            if (apuestaOptional.isPresent()) { apuesta = apuestaOptional.get(); }
+            if (usuarioOptional.isPresent()) { usuario = usuarioOptional.get(); }
+
+            Optional<Partido> partidoOptional = partidoServicio.obtenerPartidoPorId(apuesta.getIdPartido().getId());
+            if (partidoOptional.isPresent()) { partido = partidoOptional.get(); }
+
+
+            if (partido.getEstado().equals("En vivo")) {
+                BigDecimal montoApuesta = apuesta.getMontoApuesta();
+                BigDecimal montoDevolucion = montoApuesta.multiply(BigDecimal.valueOf(0.5));
+                BigDecimal newMontoUsuario = usuario.getFondos().add(montoDevolucion);
+                usuario.setFondos(newMontoUsuario);
+
+                boolean authentic = autenticacionServicio.authenticateDNI(usuario.getDni());
+                if (apuesta.getIdUsuario().getId().equals(usuario.getId()) && authentic) {
+                    usuarioServicio.actualizarUsuario(usuario.getId(), usuario);
+                    apuestaRepository.deleteById(idApuesta);
+                    return true;
+                }
+
+            } else {
+                BigDecimal montoApuesta = apuesta.getMontoApuesta();
+                BigDecimal newMontoUsuario = usuario.getFondos().add(montoApuesta);
+                usuario.setFondos(newMontoUsuario);
+
+                boolean authentic = autenticacionServicio.authenticateDNI(usuario.getDni());
+                if (apuesta.getIdUsuario().getId().equals(usuario.getId()) && authentic) {
+                    usuarioServicio.actualizarUsuario(usuario.getId(), usuario);
+                    apuestaRepository.deleteById(idApuesta);
+                    return true;
+                }
+            }
+            return false;
+
+        } catch (Exception err) {
             return false;
         }
     }

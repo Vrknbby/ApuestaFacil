@@ -2,7 +2,6 @@ package com.idat.edu.pe.EvaluacionFinal.service;
 
 import com.idat.edu.pe.EvaluacionFinal.model.Usuario;
 import com.idat.edu.pe.EvaluacionFinal.repository.UsuarioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

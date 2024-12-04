@@ -1,7 +1,6 @@
 package com.idat.edu.pe.EvaluacionFinal.service;
 
 import com.idat.edu.pe.EvaluacionFinal.model.Rol;
-import com.idat.edu.pe.EvaluacionFinal.model.Usuario;
 import com.idat.edu.pe.EvaluacionFinal.repository.RolRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

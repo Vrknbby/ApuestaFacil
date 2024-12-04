@@ -2,16 +2,12 @@ package com.idat.edu.pe.EvaluacionFinal.controller;
 
 import com.idat.edu.pe.EvaluacionFinal.DTO.PartidoDTO;
 import com.idat.edu.pe.EvaluacionFinal.model.Partido;
-import com.idat.edu.pe.EvaluacionFinal.repository.PartidoRepository;
 import com.idat.edu.pe.EvaluacionFinal.service.PartidoServicio;
-import jakarta.servlet.http.Part;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Optional;
 
 @RestController

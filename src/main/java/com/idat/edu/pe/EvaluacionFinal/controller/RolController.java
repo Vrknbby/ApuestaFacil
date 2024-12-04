@@ -1,8 +1,6 @@
 package com.idat.edu.pe.EvaluacionFinal.controller;
 
 import com.idat.edu.pe.EvaluacionFinal.model.Rol;
-
-import com.idat.edu.pe.EvaluacionFinal.model.Usuario;
 import com.idat.edu.pe.EvaluacionFinal.service.RolServicio;
 
 import org.springframework.beans.factory.annotation.Autowired;

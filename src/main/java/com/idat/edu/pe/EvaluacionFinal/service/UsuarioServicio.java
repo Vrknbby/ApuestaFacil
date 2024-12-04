@@ -3,14 +3,8 @@ package com.idat.edu.pe.EvaluacionFinal.service;
 import com.idat.edu.pe.EvaluacionFinal.model.Usuario;
 import com.idat.edu.pe.EvaluacionFinal.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -20,8 +14,6 @@ public class UsuarioServicio{
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     public ArrayList<Usuario> obtenerUsuarios(){
         return (ArrayList<Usuario>) usuarioRepository.findAll();
@@ -34,7 +26,8 @@ public class UsuarioServicio{
                 usuario.getEmail(),
                 usuario.getPassword(),
                 usuario.getFechaNacimiento(),
-                usuario.getFondos()
+                usuario.getFondos(),
+                usuario.getDni()
         );
         return usuarioRepository.save(user);
     }
@@ -43,9 +36,9 @@ public class UsuarioServicio{
         return usuarioRepository.findById(id);
     }
 
-    public Optional<Usuario> obtenerPorEmail(String email){
-        return usuarioRepository.findByEmail(email);
-    }
+    public Optional<Usuario> obtenerPorEmail(String email){return usuarioRepository.findByEmail(email);}
+
+    public Optional<Usuario> optenerPorDNI(String dni) {return usuarioRepository.findByDni(dni);}
 
     public boolean eliminarUsuario(Long id){
         try{
@@ -95,6 +88,10 @@ public class UsuarioServicio{
         nuevoaux.setFondos(nuevosFondos);
 
         return this.actualizarUsuario(id, nuevoaux);
+    }
+
+    public Usuario retirarFondos(Long id, Usuario usuario){
+        return usuario;
     }
 
 }
