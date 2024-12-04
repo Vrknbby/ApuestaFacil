@@ -121,6 +121,14 @@ public class UsuarioServicio{
         if(usuarioOPT.isPresent()){ usuario = usuarioOPT.get();}
 
         if(descuentoServicio.obtenerUsosDescuento(descuento.getId()).size() <= descuento.getCantUsos()){
+            Descuento finalDescuento = descuento;
+            if (usuario.getDescuentos().stream().anyMatch(d -> d.getCodigoDescuento().equals(finalDescuento.getCodigoDescuento()))) {
+                System.out.println("El usuario ya ha utilizado este descuento.");
+                return false;
+            }
+            usuario.getDescuentos().add(descuento);
+            usuarioRepository.save(usuario);
+
             usuario.setFondos(descuento.getRecarga());
             ingresarFondos(usuario.getId(), usuario);
             return true;
