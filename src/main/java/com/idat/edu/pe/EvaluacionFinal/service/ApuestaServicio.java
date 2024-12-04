@@ -7,7 +7,6 @@ import com.idat.edu.pe.EvaluacionFinal.model.Partido;
 import com.idat.edu.pe.EvaluacionFinal.model.Usuario;
 import com.idat.edu.pe.EvaluacionFinal.repository.ApuestaRepository;
 import com.idat.edu.pe.EvaluacionFinal.repository.UsuarioRepository;
-import jakarta.persistence.Id;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

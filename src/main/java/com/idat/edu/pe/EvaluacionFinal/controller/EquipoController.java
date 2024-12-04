@@ -1,9 +1,7 @@
 package com.idat.edu.pe.EvaluacionFinal.controller;
 
 import com.idat.edu.pe.EvaluacionFinal.model.Equipo;
-import com.idat.edu.pe.EvaluacionFinal.model.Usuario;
 import com.idat.edu.pe.EvaluacionFinal.service.EquipoServicio;
-import com.idat.edu.pe.EvaluacionFinal.service.UsuarioServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

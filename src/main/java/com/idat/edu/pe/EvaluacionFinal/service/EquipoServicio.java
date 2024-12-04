@@ -1,13 +1,11 @@
 package com.idat.edu.pe.EvaluacionFinal.service;
 
 import com.idat.edu.pe.EvaluacionFinal.model.Equipo;
-import com.idat.edu.pe.EvaluacionFinal.model.Partido;
 import com.idat.edu.pe.EvaluacionFinal.repository.EquipoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Optional;
 
 @Service

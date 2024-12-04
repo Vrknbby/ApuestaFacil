@@ -2,19 +2,15 @@ package com.idat.edu.pe.EvaluacionFinal.controller;
 
 import com.idat.edu.pe.EvaluacionFinal.DTO.ApuestaDTO;
 import com.idat.edu.pe.EvaluacionFinal.model.Apuesta;
-import com.idat.edu.pe.EvaluacionFinal.model.Equipo;
 import com.idat.edu.pe.EvaluacionFinal.model.Partido;
 import com.idat.edu.pe.EvaluacionFinal.model.Usuario;
 import com.idat.edu.pe.EvaluacionFinal.service.ApuestaServicio;
-import com.idat.edu.pe.EvaluacionFinal.service.EquipoServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Optional;
 
 @RestController
