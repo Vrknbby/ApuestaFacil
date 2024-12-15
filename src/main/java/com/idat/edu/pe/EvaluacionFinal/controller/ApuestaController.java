@@ -54,5 +54,10 @@ public class ApuestaController {
         return this.apuestaServicio.obtenerApuestaPorUsuario(id);
     }
 
+    @PutMapping("/edit/{id}")
+    public Apuesta actualizarApuesta(@PathVariable("id") Long idApuesta,@RequestBody ApuestaDTO apuestaDTO){
+        return this.apuestaServicio.actualizarApuesta(idApuesta,apuestaDTO);
+    }
+
 
 }
