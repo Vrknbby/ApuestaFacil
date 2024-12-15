@@ -38,7 +38,7 @@ public class PromocionController {
     }
 
     @DeleteMapping(path = "/{id}")
-    public String obtenerPromocionPorCodigo(@PathVariable("id") Long id){
+    public String eliminarPromocionPorCodigo(@PathVariable("id") Long id){
         boolean ok = this.promocionServicio.eliminarPromocion(id);
         if (ok) return "La promocion se elimino correctamente";
         else return "No se pudo eliminar la promocion";

@@ -84,9 +84,13 @@ public class PartidoDTO {
     }
 
     public void setIdEquipoGanador(Long idEquipoGanador) {
-        if (idEquipoGanador != null & idEquipoGanador.equals(EMPATE_ID)){
+        if (idEquipoGanador == null) {
+            this.idEquipoGanador = null;
+        }
+        else if (idEquipoGanador != null & idEquipoGanador.equals(EMPATE_ID)){
             this.idEquipoGanador = idEquipoGanador;
-        }else{
+        }
+        else{
             this.idEquipoGanador = idEquipoGanador;
         }
     }

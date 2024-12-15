@@ -1,11 +1,11 @@
 package com.idat.edu.pe.EvaluacionFinal.controller;
 
-import static org.junit.jupiter.api.Assertions.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.idat.edu.pe.EvaluacionFinal.model.Usuario;
-import com.idat.edu.pe.EvaluacionFinal.repository.UsuarioRepository;
-import com.idat.edu.pe.EvaluacionFinal.service.UsuarioServicio;
+import com.idat.edu.pe.EvaluacionFinal.model.Promocion;
+import com.idat.edu.pe.EvaluacionFinal.repository.PromocionRepository;
+import com.idat.edu.pe.EvaluacionFinal.service.PromocionServicio;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -13,101 +13,96 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.transaction.annotation.Transactional;
-import java.math.BigDecimal;
-import java.time.LocalDate;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
-class UsuarioControllerTest {
-
+class PromocionControllerTest {
     @Autowired
     private MockMvc mvc;
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private PromocionServicio promocionServicio;
 
     @Autowired
-    private UsuarioServicio usuarioServicio;
+    private PromocionRepository promocionRepository;
 
     @Test
-    void testObtenerUsuarios() throws Exception {
+    void testObtenerPromociones() throws Exception{
         mvc.perform(MockMvcRequestBuilders
-                        .get("/api/usuario")
+                        .get("/api/promocion")
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
 
     @Test
-    void testGuardarUsuario() throws Exception {
-        Usuario nuevoUsuario = new Usuario("Nuevo Usuario", "nuevo@usuario.com", "pass123", LocalDate.parse("1995-05-15"), new BigDecimal("3000.00") ,"75368889");
-
+    void testOtenerPromocionPorCodigo() throws Exception{
         mvc.perform(MockMvcRequestBuilders
-                        .post("/api/usuario")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(nuevoUsuario))
+                        .get("/api/promocion/HALOWEEN")
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.nombre").value("Nuevo Usuario"))
-                .andExpect(jsonPath("$.email").value("nuevo@usuario.com"));
+                .andExpect(status().isOk());
     }
 
     @Test
-    void testEliminarUsuarioPorId() throws Exception {
-        Long idUsuarioAEliminar = 6L;
+    void testGuardarPromocion() throws Exception{
+        Promocion nuevaPromocion = new Promocion("RecargaAdicional", 100.0, "NAVIDAD", "NAVIDAD" ,"ACTIVO");
 
         mvc.perform(MockMvcRequestBuilders
-                        .delete("/api/usuario/{id}", idUsuarioAEliminar)
+                        .post("/api/promocion")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(nuevaPromocion))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.tipoPromocion").value("RecargaAdicional"))
+                .andExpect(jsonPath("$.montoPromocion").value(100.0))
+                .andExpect(jsonPath("$.nombrePromocion").value("NAVIDAD"))
+                .andExpect(jsonPath("$.codigoPromocion").value("NAVIDAD"))
+                .andExpect(jsonPath("$.estadoPromocion").value("ACTIVO"));
+    }
+
+    @Test
+    void testEliminarPromocionPorCodigo() throws Exception{
+        Long idPromocionAEliminar = 2L;
+
+        mvc.perform(MockMvcRequestBuilders
+                        .delete("/api/promocion/{id}", idPromocionAEliminar)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());  // Verifica que la respuesta sea 200 OK
 
         mvc.perform(MockMvcRequestBuilders
-                        .get("/api/usuario")  // Usa la ruta correcta
+                        .get("/api/promocion")  // Usa la ruta correcta
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
 
     @Test
-    void testObtenerUsuarioPorID() throws Exception {
-        mvc.perform(MockMvcRequestBuilders
-                        .get("/api/usuario/6")
-                        .accept(MediaType.APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isOk());
-    }
+    void testActualizarPromocion() throws Exception{
+        Long idPromocionExistente = 4L;
+        Promocion promocionActualizada = new Promocion();
+        promocionActualizada.setEstadoPromocion("ACTIVO");
+        promocionActualizada.setNombrePromocion("AñoNuevo");
+        promocionActualizada.setTipoPromocion("ApuestaGratis");
+        promocionActualizada.setMontoPromocion(100.0);
+        promocionActualizada.setCodigoPromocion("NUEVO2025");
 
-    @Test
-    void testActualizarUsuario() throws Exception {
-
-        Long idUsuarioExistente = 6L;
-        Usuario usuarioActualizado = new Usuario();
-        usuarioActualizado.setNombre("Nuevo Nombre");
-        usuarioActualizado.setEmail("nuevo.email@example.com");
-        usuarioActualizado.setPassword("nuevoPassword123");
-        usuarioActualizado.setFechaNacimiento(LocalDate.parse("1990-01-01"));
-        usuarioActualizado.setFondos(new BigDecimal("1500.00"));
-        usuarioActualizado.setDni("12345678");
-
-        String usuarioJson = asJsonString(usuarioActualizado);
+        String promocionJson = asJsonString(promocionActualizada);
 
         mvc.perform(MockMvcRequestBuilders
-                        .put("/api/usuario/edit/{id}", idUsuarioExistente)
-                        .content(usuarioJson)
+                        .put("/api/promocion/edit/{id}", idPromocionExistente)
+                        .content(promocionJson)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
     }
-
-
 
     private static String asJsonString(final Object obj) {
         try {
@@ -118,6 +113,4 @@ class UsuarioControllerTest {
             throw new RuntimeException(e);
         }
     }
-
-
 }
