@@ -69,7 +69,6 @@ class RolControllerTest {
                 .andExpect(status().isOk());
     }
 
-
     @Test
     void obtenerRolPorId() throws Exception {
 

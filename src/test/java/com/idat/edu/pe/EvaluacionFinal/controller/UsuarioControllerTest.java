@@ -107,8 +107,6 @@ class UsuarioControllerTest {
 
     }
 
-
-
     private static String asJsonString(final Object obj) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();

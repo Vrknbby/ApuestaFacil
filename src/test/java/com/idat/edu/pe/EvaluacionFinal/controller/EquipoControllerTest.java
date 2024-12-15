@@ -71,7 +71,7 @@ public class EquipoControllerTest {
 
     @Test
     void testEliminarUsuarioPorId() throws Exception {
-        Long idEquipoAEliminar = 1L;
+        Long idEquipoAEliminar = 406L; //Equipo no debe estar asociado a un Partido
 
         mvc.perform(MockMvcRequestBuilders
                         .delete("/api/equipo/{id}", idEquipoAEliminar)
