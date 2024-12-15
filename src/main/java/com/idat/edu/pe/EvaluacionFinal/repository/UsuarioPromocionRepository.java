@@ -11,4 +11,6 @@ public interface UsuarioPromocionRepository extends JpaRepository<UsuarioPromoci
 
     Optional<UsuarioPromocion> findByUsuarioIdAndPromocionId(Long usuarioId, Long promocionId);
 
+    Optional<UsuarioPromocion> findByPromocionId(Long promocionId);
+
 }

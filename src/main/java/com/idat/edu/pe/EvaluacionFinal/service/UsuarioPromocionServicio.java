@@ -47,4 +47,13 @@ public class UsuarioPromocionServicio {
     public Optional<UsuarioPromocion> obtenerPorUsuarioYPromocion(UsuarioPromocionDTO usuarioPromocionDTO) {
         return usuarioPromocionRepository.findByUsuarioIdAndPromocionId(usuarioPromocionDTO.getUsuarioId(), usuarioPromocionDTO.getPromocionId());
     }
+
+    public void eliminarPorPromocionId(Long id){
+        usuarioPromocionRepository.deleteById(id);
+    }
+    public Optional<UsuarioPromocion> obtenerPorPromocionId(Long id) {
+        return usuarioPromocionRepository.findByPromocionId(id);
+    }
+
+
 }

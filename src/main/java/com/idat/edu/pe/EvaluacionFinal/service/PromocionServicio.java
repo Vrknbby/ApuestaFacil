@@ -1,6 +1,7 @@
 package com.idat.edu.pe.EvaluacionFinal.service;
 
 import com.idat.edu.pe.EvaluacionFinal.model.Promocion;
+import com.idat.edu.pe.EvaluacionFinal.model.UsuarioPromocion;
 import com.idat.edu.pe.EvaluacionFinal.repository.PromocionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,20 +27,6 @@ public class PromocionServicio {
         return  promocionRepository.findById(id);
     }
 
-    public Promocion actualizarPromocion(Promocion promocion, Long id){
-        Promocion promocionActual = promocionRepository.findById(id).orElse(null);
-        if (promocionActual != null){
-            promocionActual.setTipoPromocion(promocion.getTipoPromocion());
-            promocionActual.setNombrePromocion(promocion.getNombrePromocion());
-            promocionActual.setMontoPromocion(promocion.getMontoPromocion());
-            promocionActual.setCodigoPromocion(promocion.getCodigoPromocion());
-            promocionActual.setEstadoPromocion(promocion.getEstadoPromocion());
-
-            return promocionRepository.save(promocionActual);
-        }
-        return null;
-    }
-
     public void actualizarEstado(Long id){
         Promocion promocionActual = promocionRepository.findById(id).orElse(null);
         if (promocionActual != null){
@@ -57,5 +44,51 @@ public class PromocionServicio {
     public Promocion buscarPorCodigo(String codigo){
         return promocionRepository.findByCodigoPromocion(codigo);
     }
+
+    @Autowired
+    UsuarioPromocionServicio usuarioPromocionServicio;
+
+    public boolean eliminarPromocion(Long id){
+        Promocion promocion = promocionRepository.findById(id).orElse(null);
+        Optional<UsuarioPromocion> usuarioPromocionOptional = usuarioPromocionServicio.obtenerPorPromocionId(id);
+        UsuarioPromocion usuarioPromocion = new UsuarioPromocion();
+        if (promocion != null){
+            if (usuarioPromocionOptional.isPresent() ){
+                usuarioPromocion = usuarioPromocionOptional.get();
+                System.out.println(usuarioPromocion.getId());
+                usuarioPromocionServicio.eliminarPorPromocionId(usuarioPromocion.getId());
+            }
+            promocionRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
+
+    public Promocion actualizarPromocion(Promocion promocionActualizada, Long id){
+        Promocion promocion = promocionRepository.findById(id).orElse(null);
+        if(promocion != null){
+            if(promocion.getCodigoPromocion()!=null){
+                promocion.setCodigoPromocion(promocionActualizada.getCodigoPromocion());
+            }
+            if(promocion.getMontoPromocion()!=null){
+                promocion.setMontoPromocion(promocionActualizada.getMontoPromocion());
+            }
+            if(promocion.getTipoPromocion()!=null){
+                promocion.setTipoPromocion(promocionActualizada.getTipoPromocion());
+            }
+            if(promocion.getNombrePromocion()!=null){
+                promocion.setNombrePromocion(promocionActualizada.getNombrePromocion());
+            }
+            if(promocion.getEstadoPromocion()!=null){
+                promocion.setEstadoPromocion(promocionActualizada.getEstadoPromocion());
+            }
+
+            return promocionRepository.save(promocion);
+        }else{
+            return null;
+        }
+    }
+
 
 }
